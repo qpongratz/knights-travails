@@ -18,10 +18,7 @@
 
 
 
-
-# def knight_moves(start_pos, end_pos)
-#   step(current_generation = start_pos)
-# end
+require 'pry'
 
 # Controls what move nodes keep track of.
 class MoveNode
@@ -37,17 +34,33 @@ class MoveNode
 
   def children
     TRANSFORMATIONS.map { |t| [@position[0] + t[0], @position[1] + t[1]] }
-                   .keep_if { |e| valid?(e) }
+                   .keep_if { |e| MoveNode.valid?(e) }
                    .map { |e| MoveNode.new(e, self) }
   end
 
-  def valid?(position)
+  def self.valid?(position)
     position[0].between?(1, 8) && position[1].between?(1, 8)
   end
 end
 
-new = MoveNode.new([0, 0], nil)
-p new.children
+def display_parent(node)
+  display_parent(node.parent) unless node.parent.nil?
+  p node.position
+end
+
+def knight_moves(start_pos, end_position)
+  queue = []
+  current_node = MoveNode.new(start_pos, nil)
+  until current_node.position == end_position
+    current_node.children.each { |child| queue.push(child) }
+    current_node = queue.shift
+  end
+  display_parent(current_node)
+end
+
+
+knight_moves([1, 1], [8, 8])
+
 
 # for current generation take each position
 # calculate the 8 positions it can go to from there
