@@ -7,14 +7,18 @@ class MoveNode
   TRANSFORMATIONS = [[1, 2], [-2, -1], [-1, 2], [2, -1],
                      [1, -2], [-2, 1], [-1, -2], [2, 1]].freeze
 
+   @@history = []
+
   def initialize(position, parent)
     @position = position
     @parent = parent
+    @@history.push(position)
   end
 
   def children
     TRANSFORMATIONS.map { |t| [@position[0] + t[0], @position[1] + t[1]] }
                    .keep_if { |e| MoveNode.valid?(e) }
+                   .reject { |e| @@history.include?(e) }
                    .map { |e| MoveNode.new(e, self) }
   end
 
