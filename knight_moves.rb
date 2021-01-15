@@ -25,8 +25,7 @@
 
 # Controls what move nodes keep track of.
 class MoveNode
-  attr_accessor :position, :transformations
-  attr_reader :history
+  attr_reader :position, :parent
 
   TRANSFORMATIONS = [[1, 2], [-2, -1], [-1, 2], [2, -1],
                      [1, -2], [-2, 1], [-1, -2], [2, 1]].freeze
